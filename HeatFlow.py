@@ -2,6 +2,7 @@ import numpy as np
 from PipeGrid import PipeGrid
 from getNeighbours import getNeighbours
 import matplotlib.pyplot as plt
+from simulate import run
 
 # Global parameters
 v = 21.8
@@ -26,58 +27,31 @@ def main():
         z = v * dt * t
 
         if z < L:
-            if t % reco_step == 0:
-                T_Tot.append(grid)
-
             heated = int(z/dh)
             grid[:heated, 1] = T_g
+
+            if t % reco_step == 0:
+                T_Tot.append(grid)
         else:
             grid[:, 1] = T_g
             t_start = t
             break
         
-        for x in np.arange(1, grid.shape[0]-1):
-            for y in np.arange(1, grid.shape[1]-1):
-                if grid[x, y] == T_g:
-                    pass
-                else:
-                    grid_last = T_Tot[-1]
-                    c_s = 450 + 0.28 * (grid[x, y]-273.15)
-                    alpha = k_s / (rho_s*c_s)
-                    neighbours = getNeighbours((x, y))
-                    coeff = alpha / (dh**2)
-                    sum_T = 0
-                    for pair in neighbours:
-                        sum_T += grid_last[pair[0], pair[1]]
-
-                    grid[x, y] = dt * (coeff * (sum_T - 6*grid_last[x, y])) + grid_last[x, y]
+        run(grid, T_g, k_s, rho_s, T_Tot, dh, dt)
     
+
     for t in np.arange(t_start, t_finish):
         if t % reco_step == 0:
             T_Tot.append(grid)
 
-        for x in np.arange(1, grid.shape[0]-1):
-            for y in np.arange(1, grid.shape[1]-1):
-                if grid[x, y] == T_g:
-                    pass
-                else:
-                    grid_last = T_Tot[-1]
-                    c_s = 450 + 0.28 * (grid[x, y]-273.15)
-                    alpha = k_s / (rho_s*c_s)
-                    neighbours = getNeighbours((x, y))
-                    coeff = alpha / (dh**2)
-                    sum_T = 0
-                    for pair in neighbours:
-                        sum_T += grid_last[pair[0], pair[1]]
-                        
-                    grid[x, y] = dt * (coeff * (sum_T - 6*grid_last[x, y])) + grid_last[x, y]
+        run(grid, T_g, k_s, rho_s, T_Tot, dh, dt)
     
     fig, ax = plt.subplots(111, dpi=300)
-    t_finish = np.linspace(0, t_finish, t_finish+1) * dt
+    t_list = np.arange(len(T_Tot)) * dt
     T_plot = []
     for T in T_Tot:
         T_plot.append(T[int(grid.shape[0]/2), grid.shape[1]-2])
-    ax.plot(t_finish, T_plot, 'r-')
+    ax.plot(t_list, T_plot, 'r-')
     fig.savefig('image.png')
     plt.close(fig)
 
