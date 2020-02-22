@@ -23,6 +23,7 @@ def main():
     fig = plt.figure(dpi=300)
     ax = fig.add_subplot(111)
     ax.plot(time, temp,'r-')
+    fig.savefig('image.png')
     plt.close(fig)
     gc.collect()
 

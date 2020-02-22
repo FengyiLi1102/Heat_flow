@@ -15,14 +15,14 @@ plb.rcParams.update(params)
 
 def main():
 
-    data = pd.read_csv('data.csv')
+    data = pd.read_csv('data3.csv')
     fig = plt.figure(dpi=300)
-    ax = fig.add_subplots(111)
+    ax = fig.add_subplot(111)
 
-    ax.plot(data.iloc[:, 0], data.iloc[:, 1], 'r-', linewidth=1.5)
+    ax.plot(data.iloc[:, 2], data.iloc[:, 3], 'r-', linewidth=1.5)
     ax.set_ylabel('Temperature (K)')
     ax.set_xlabel('Time (s)')
-    fig.savefig('T_t.png')
+    fig.savefig('T_t_catalyst.png')
 
 
 if __name__ == "__main__":
