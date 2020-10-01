@@ -4,7 +4,7 @@
 
 The pipe with the catalyst is shown in the following figure.
 <p align="center">
-  <img width="1000" height="400" src="https://github.com/FengyiLi1102/Heat_flow/blob/master/pipe_object.PNG">
+  <img width="800" height="500" src="https://github.com/FengyiLi1102/Heat_flow/blob/master/pipe_object.PNG">
 </p>
 
 ## Project results
