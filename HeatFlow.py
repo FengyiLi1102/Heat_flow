@@ -17,7 +17,7 @@ reco_step = 1
 
 def body():
     dh = 0.0001
-    dt = 0.00001
+    dt = 0.0001
     time = 100
     t_finish = int(time/dt)
     grid = PipeGrid(dh)
